@@ -187,6 +187,23 @@ class Controleur {
     public function count_examens_candidat($id_candidat){
         return $this->unModele->count_examens_candidat($id_candidat);
     }
+
+    // ***************** gestion du calendrier ***************** 
+
+    public function selectAll_evenements(){
+        $lesEvenements = $this->unModele->selectAll_evenements();
+        return $lesEvenements;
+    }
+
+    public function selectEvenements_byMonth($annee, $mois){
+        $lesEvenements = $this->unModele->selectEvenements_byMonth($annee, $mois);
+        return $lesEvenements;
+    }
+
+    public function selectEvenements_prochains($nbJours = 7){
+        $lesEvenements = $this->unModele->selectEvenements_prochains($nbJours);
+        return $lesEvenements;
+    }
 }
  
 ?>

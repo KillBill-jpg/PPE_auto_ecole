@@ -495,5 +495,146 @@ class Modele {
         $result = $exec->fetch();
         return $result['nb'];
     }
+
+                        /* gestion du calendrier */
+    
+    // Récupérer tous les événements (leçons + examens) pour le calendrier
+    public function selectAll_evenements(){
+        // Récupérer les leçons
+        $requeteLecons = "select 
+                            'lecon' as type_evenement,
+                            l.id_lecon as id_evenement,
+                            l.date_lecon as date_evenement,
+                            l.duree_lecon,
+                            l.libelle,
+                            concat(c.nomC, ' ', c.prenomC) as candidat_nom,
+                            concat(m.nomM, ' ', m.prenomM) as moniteur_nom,
+                            v.immat as vehicule_info,
+                            null as resultat
+                        from lecon l
+                        left join candidat c on l.id_candidat = c.id_candidat
+                        left join moniteur m on l.id_moniteur = m.id_moniteur
+                        left join vehicule v on l.id_vehicule = v.id_vehicule
+                        where l.date_lecon >= curdate()";
+        
+        // Récupérer les examens
+        $requeteExamens = "select 
+                            'examen' as type_evenement,
+                            e.id_examen as id_evenement,
+                            e.date_examen as date_evenement,
+                            null as duree_lecon,
+                            e.type_examen as libelle,
+                            concat(c.nomC, ' ', c.prenomC) as candidat_nom,
+                            concat(m.nomM, ' ', m.prenomM) as moniteur_nom,
+                            e.lieu_examen as vehicule_info,
+                            e.resultat
+                        from examen e
+                        left join candidat c on e.id_candidat = c.id_candidat
+                        left join moniteur m on e.id_moniteur = m.id_moniteur
+                        where e.date_examen >= curdate()";
+        
+        // Union des deux requêtes et tri par date
+        $requete = "($requeteLecons) union ($requeteExamens) order by date_evenement asc";
+        
+        $exec = $this->unPdo->prepare($requete);
+        $exec->execute();
+        return $exec->fetchAll();
+    }
+    
+    // Récupérer les événements pour un mois spécifique
+    public function selectEvenements_byMonth($annee, $mois){
+        $mois = str_pad($mois, 2, '0', STR_PAD_LEFT);
+        $annee = str_pad($annee, 4, '0', STR_PAD_LEFT);
+        
+        // Récupérer les leçons du mois
+        $requeteLecons = "select 
+                            'lecon' as type_evenement,
+                            l.id_lecon as id_evenement,
+                            l.date_lecon as date_evenement,
+                            l.duree_lecon,
+                            l.libelle,
+                            concat(c.nomC, ' ', c.prenomC) as candidat_nom,
+                            c.nomC as nom_candidat,
+                            c.prenomC as prenom_candidat,
+                            concat(m.nomM, ' ', m.prenomM) as moniteur_nom,
+                            v.immat as vehicule_info,
+                            null as resultat
+                        from lecon l
+                        left join candidat c on l.id_candidat = c.id_candidat
+                        left join moniteur m on l.id_moniteur = m.id_moniteur
+                        left join vehicule v on l.id_vehicule = v.id_vehicule
+                        where month(l.date_lecon) = :mois 
+                        and year(l.date_lecon) = :annee";
+        
+        // Récupérer les examens du mois
+        $requeteExamens = "select 
+                            'examen' as type_evenement,
+                            e.id_examen as id_evenement,
+                            e.date_examen as date_evenement,
+                            null as duree_lecon,
+                            e.type_examen as libelle,
+                            concat(c.nomC, ' ', c.prenomC) as candidat_nom,
+                            c.nomC as nom_candidat,
+                            c.prenomC as prenom_candidat,
+                            concat(m.nomM, ' ', m.prenomM) as moniteur_nom,
+                            e.lieu_examen as vehicule_info,
+                            e.resultat
+                        from examen e
+                        left join candidat c on e.id_candidat = c.id_candidat
+                        left join moniteur m on e.id_moniteur = m.id_moniteur
+                        where month(e.date_examen) = :mois 
+                        and year(e.date_examen) = :annee";
+        
+        $requete = "($requeteLecons) union ($requeteExamens) order by date_evenement asc";
+        
+        $exec = $this->unPdo->prepare($requete);
+        $exec->execute(array(':mois' => intval($mois), ':annee' => intval($annee)));
+        return $exec->fetchAll();
+    }
+    
+    // Récupérer les événements des 7 prochains jours
+    public function selectEvenements_prochains($nbJours = 7){
+        $dateDebut = date('Y-m-d');
+        $dateFin = date('Y-m-d', strtotime("+$nbJours days"));
+        
+        // Récupérer les leçons
+        $requeteLecons = "select 
+                            'lecon' as type_evenement,
+                            l.id_lecon as id_evenement,
+                            l.date_lecon as date_evenement,
+                            l.duree_lecon,
+                            l.libelle,
+                            concat(c.nomC, ' ', c.prenomC) as candidat_nom,
+                            concat(m.nomM, ' ', m.prenomM) as moniteur_nom,
+                            v.immat as vehicule_info,
+                            null as resultat
+                        from lecon l
+                        left join candidat c on l.id_candidat = c.id_candidat
+                        left join moniteur m on l.id_moniteur = m.id_moniteur
+                        left join vehicule v on l.id_vehicule = v.id_vehicule
+                        where date(l.date_lecon) between :dateDebut and :dateFin";
+        
+        // Récupérer les examens
+        $requeteExamens = "select 
+                            'examen' as type_evenement,
+                            e.id_examen as id_evenement,
+                            e.date_examen as date_evenement,
+                            null as duree_lecon,
+                            e.type_examen as libelle,
+                            concat(c.nomC, ' ', c.prenomC) as candidat_nom,
+                            concat(m.nomM, ' ', m.prenomM) as moniteur_nom,
+                            e.lieu_examen as vehicule_info,
+                            e.resultat
+                        from examen e
+                        left join candidat c on e.id_candidat = c.id_candidat
+                        left join moniteur m on e.id_moniteur = m.id_moniteur
+                        where date(e.date_examen) between :dateDebut and :dateFin";
+        
+        $requete = "($requeteLecons) union ($requeteExamens) order by date_evenement asc";
+        
+        $exec = $this->unPdo->prepare($requete);
+        $exec->execute(array(':dateDebut' => $dateDebut, ':dateFin' => $dateFin));
+        return $exec->fetchAll();
+    }
 }
 ?>
