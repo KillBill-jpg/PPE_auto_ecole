@@ -60,4 +60,20 @@ create table lecon (
     foreign key (id_vehicule) references vehicule(id_vehicule)
 );
 
-insert into user values (null, 'admin@autoecole.fr', 'admin123', 'Admin', 'Système', 'admin');
+create table examen (
+    id_examen int auto_increment,
+    id_candidat int not null,
+    id_moniteur int,
+    id_vehicule int,
+    type_examen varchar(50) not null,
+    lieu_examen varchar(100),
+    date_examen datetime not null,
+    resultat enum('En attente', 'Réussi', 'Échoué') default 'En attente',
+    remarques text,
+    constraint pk_examen primary key (id_examen),
+    foreign key (id_candidat) references candidat(id_candidat),
+    foreign key (id_moniteur) references moniteur(id_moniteur),
+    foreign key (id_vehicule) references vehicule(id_vehicule)
+);
+
+insert into user values (null, 'admin@admin.fr', 'adminpass', 'Admin', 'Système', 'admin');

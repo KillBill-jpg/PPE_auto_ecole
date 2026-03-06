@@ -379,5 +379,121 @@ class Modele {
         $exec->execute($donnees);
         return $exec->fetchAll();
     }
+
+                        /* gestion des examens */
+    
+    public function insert_examen($tab) {
+        $requete = "insert into examen values (null, :id_candidat, :id_moniteur, :id_vehicule, :type_examen, :lieu_examen, :date_examen, :resultat, :remarques);";
+        $exec = $this->unPdo->prepare($requete);
+        $donnees = array(
+            ":id_candidat"         => $tab["id_candidat"],
+            ":id_moniteur"         => $tab["id_moniteur"],
+            ":id_vehicule"         => $tab["id_vehicule"],
+            ":type_examen"         => $tab["type_examen"],
+            ":lieu_examen"         => $tab["lieu_examen"],
+            ":date_examen"         => $tab["date_examen"],
+            ":resultat"            => $tab["resultat"],
+            ":remarques"           => $tab["remarques"],
+        );
+        $exec->execute($donnees);
+    }
+
+    public function selectAll_examens(){
+        $requete = "select e.*, c.nomC, c.prenomC, m.nomM, m.prenomM, v.immat, v.marque, v.modele 
+                    from examen e
+                    left join candidat c on e.id_candidat = c.id_candidat
+                    left join moniteur m on e.id_moniteur = m.id_moniteur
+                    left join vehicule v on e.id_vehicule = v.id_vehicule
+                    order by e.date_examen desc;";
+        $exec = $this->unPdo->prepare($requete);
+        $exec->execute();
+        return $exec->fetchAll();
+    }
+
+    public function selectLike_examens($filtre){
+        $requete = "select e.*, c.nomC, c.prenomC, m.nomM, m.prenomM, v.immat, v.marque, v.modele 
+                    from examen e
+                    left join candidat c on e.id_candidat = c.id_candidat
+                    left join moniteur m on e.id_moniteur = m.id_moniteur
+                    left join vehicule v on e.id_vehicule = v.id_vehicule
+                    where c.nomC like :filtre 
+                    or c.prenomC like :filtre 
+                    or e.type_examen like :filtre
+                    order by e.date_examen desc;";
+        $donnees = array(":filtre" => "%".$filtre."%");
+        $exec = $this->unPdo->prepare($requete);
+        $exec->execute($donnees);
+        return $exec->fetchAll();
+    }
+
+    public function delete_examen($id_examen){
+        $requete = "delete from examen 
+                    where id_examen = :id_examen;";
+        $exec = $this->unPdo->prepare($requete);
+        $donnees = array(":id_examen" => $id_examen);
+        $exec->execute($donnees);
+    }
+
+    public function update_examen($tab){
+        $requete = "update examen set 
+                    id_candidat = :id_candidat, 
+                    id_moniteur = :id_moniteur, 
+                    id_vehicule = :id_vehicule, 
+                    type_examen = :type_examen,
+                    lieu_examen = :lieu_examen, 
+                    date_examen = :date_examen,
+                    resultat = :resultat, 
+                    remarques = :remarques, date_creation = :date_creation 
+                    where id_examen = :id_examen;";
+        $exec = $this->unPdo->prepare($requete);
+        $donnees = array(
+            ":id_candidat"         => $tab["id_candidat"],
+            ":id_moniteur"         => $tab["id_moniteur"],
+            ":id_vehicule"         => $tab["id_vehicule"],
+            ":type_examen"         => $tab["type_examen"],
+            ":date_examen"         => $tab["date_examen"],
+            ":resultat"            => $tab["resultat"],
+            ":remarques"           => $tab["remarques"],
+            ":id_examen"           => $tab["id_examen"]
+        );
+        $exec->execute($donnees);
+    }
+
+    public function selectWhere_examen($id_examen){
+        $requete = "select e.*, c.nomC, c.prenomC, m.nomM, m.prenomM, v.immat, v.marque, v.modele 
+                    from examen e
+                    left join candidat c on e.id_candidat = c.id_candidat
+                    left join moniteur m on e.id_moniteur = m.id_moniteur
+                    left join vehicule v on e.id_vehicule = v.id_vehicule
+                    where e.id_examen = :id_examen;";
+        $donnees = array(":id_examen" => $id_examen);
+        $exec = $this->unPdo->prepare($requete);
+        $exec->execute($donnees);
+        return $exec->fetch();
+    }
+
+    public function selectExamens_byCandidat($id_candidat){
+        $requete = "select e.*, c.nomC, c.prenomC, m.nomM, m.prenomM, v.immat, v.marque, v.modele 
+                    from examen e
+                    left join candidat c on e.id_candidat = c.id_candidat
+                    left join moniteur m on e.id_moniteur = m.id_moniteur
+                    left join vehicule v on e.id_vehicule = v.id_vehicule
+                    where e.id_candidat = :id_candidat
+                    order by e.date_examen desc;";
+        $donnees = array(":id_candidat" => $id_candidat);
+        $exec = $this->unPdo->prepare($requete);
+        $exec->execute($donnees);
+        return $exec->fetchAll();
+    }
+
+    public function count_examens_candidat($id_candidat){
+        $requete = "select count(*) as nb from examen 
+                    where id_candidat = :id_candidat;";
+        $donnees = array(":id_candidat" => $id_candidat);
+        $exec = $this->unPdo->prepare($requete);
+        $exec->execute($donnees);
+        $result = $exec->fetch();
+        return $result['nb'];
+    }
 }
 ?>

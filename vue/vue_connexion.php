@@ -57,7 +57,7 @@
             <input type="submit" name="Connexion" value="Se connecter">
         </form>
         <p style="font-size: 12px; color: #666; text-align: center; margin-top: 20px;">
-            Compte par défaut : admin@autoecole.fr / admin123
+            Compte par défaut : admin@admin.fr / adminpass
         </p>
     </div>
 </body>

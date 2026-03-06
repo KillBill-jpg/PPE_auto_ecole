@@ -149,6 +149,44 @@ class Controleur {
         $lesLecons = $this->unModele->selectLecons_byCandidat($id_candidat);
         return $lesLecons;
     }
+
+    // ***************** gestion des examens ***************** 
+    
+    public function insert_examen($tab){
+        $this->unModele->insert_examen($tab);
+    }
+
+    public function selectAll_examens(){
+        $lesExamens = $this->unModele->selectAll_examens();
+        return $lesExamens;
+    }
+
+    public function selectLike_examens($filtre){
+        $lesExamens = $this->unModele->selectLike_examens($filtre); 
+        return $lesExamens; 
+    }
+
+    public function delete_examen($id_examen){
+        $this->unModele->delete_examen($id_examen);
+    }
+
+    public function update_examen($tab){
+        $this->unModele->update_examen($tab);
+    }
+
+    public function selectWhere_examen($id_examen){
+        $unExamen = $this->unModele->selectWhere_examen($id_examen);
+        return $unExamen;
+    }
+
+    public function selectExamens_byCandidat($id_candidat){
+        $lesExamens = $this->unModele->selectExamens_byCandidat($id_candidat);
+        return $lesExamens;
+    }
+
+    public function count_examens_candidat($id_candidat){
+        return $this->unModele->count_examens_candidat($id_candidat);
+    }
 }
  
 ?>

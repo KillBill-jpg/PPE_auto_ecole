@@ -58,7 +58,6 @@
                     <option value="">-- Choisir un cours --</option>
                     <option value="Permis A">Permis A</option>
                     <option value="Permis B">Permis B</option>
-                    <option value="Permis Moto">Permis Moto</option>
                     <option value="BSR">BSR</option>
                     <option value="Code de la route">Code de la route</option>
                     <option value="Conduite accompagnée">Conduite accompagnée</option>

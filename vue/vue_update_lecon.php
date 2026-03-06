@@ -58,7 +58,6 @@
                 <select name="libelle" required>
                     <option value="Permis A" <?php if($uneLecon['libelle']=='Permis A') echo 'selected'; ?>>Permis A</option>
                     <option value="Permis B" <?php if($uneLecon['libelle']=='Permis B') echo 'selected'; ?>>Permis B</option>
-                    <option value="Permis Moto" <?php if($uneLecon['libelle']=='Permis Moto') echo 'selected'; ?>>Permis Moto</option>
                     <option value="BSR" <?php if($uneLecon['libelle']=='BSR') echo 'selected'; ?>>BSR</option>
                     <option value="Code de la route" <?php if($uneLecon['libelle']=='Code de la route') echo 'selected'; ?>>Code de la route</option>
                     <option value="Conduite accompagnée" <?php if($uneLecon['libelle']=='Conduite accompagnée') echo 'selected'; ?>>Conduite accompagnée</option>
