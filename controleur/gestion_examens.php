@@ -1,7 +1,6 @@
 <h2>Gestion des examens</h2>
 
 <?php
-    // AFFICHER LE MESSAGE DE SUCCÈS
     if (isset($_SESSION['message'])) {
         echo "<p style='color: green;'>".$_SESSION['message']."</p>";
         unset($_SESSION['message']);
@@ -24,14 +23,17 @@
             $lesExamens = $unControleur->selectExamens_byCandidat($_GET['candidat']);
             $candidatInfo = $unControleur->selectWhere_candidat($_GET['candidat']);
             echo "<h3>Examens de ".$candidatInfo['nomC']." ".$candidatInfo['prenomC']."</h3>";
-            echo "<a href='?page=6'>← Voir tous les examens</a>";
+            echo "<a href='?page=2'>← Retour à la liste des candidats</a>";
+            echo "<hr>";
+            
+            require_once('vue/vue_select_examen.php');
+            
         } else {
             $lesExamens = $unControleur->selectAll_examens();
+            $lesCandidats = $unControleur->selectAll_candidats();
+            $lesMoniteurs = $unControleur->selectAll_moniteurs();
+            $lesVehicules = $unControleur->selectAll_vehicules();
+            require_once('vue/vue_insert_examen.php');
         }
-        
-        $lesCandidats = $unControleur->selectAll_candidats();
-        $lesMoniteurs = $unControleur->selectAll_moniteurs();
-        $lesVehicules = $unControleur->selectAll_vehicules();
-        require_once('vue/vue_insert_examen.php');
     }
 ?>

@@ -24,7 +24,7 @@
         </tr>
         <tr>
             <td>Date d'inscription :</td>
-            <td><input type="date" name="date_inscription" value="<?php echo date('Y-m-d'); ?>" required></td>
+            <td><input type="date" name="date_inscription" value="<?php echo date('d-m-Y'); ?>" required></td>
         </tr>
         <tr>
             <td><input type="submit" name="Annuler" value="Annuler"></td>
@@ -44,7 +44,7 @@
             "date_inscription" => $_POST['date_inscription']
         );
         $unControleur->insert_candidat($tab);
-        echo "<br>Candidat ajouté avec succès !";
+        echo "<br><p style='color: green;'>Candidat ajouté avec succès !</p>";
         header("Refresh:1");
     }
 ?>

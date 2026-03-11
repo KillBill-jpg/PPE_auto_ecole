@@ -100,7 +100,7 @@
             "compterendu" => $_POST['compterendu']
         );
         $unControleur->insert_lecon($tab);
-        echo "<br>Leçon ajoutée avec succès !";
+        echo "<br><p style='color: green;'>Leçon ajoutée avec succès !</p>";
         header("Refresh:1");
     }
 ?>

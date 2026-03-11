@@ -39,7 +39,7 @@
             "date_embauche" => $_POST['date_embauche']
         );
         $unControleur->insert_moniteur($tab);
-        echo "<br>Moniteur ajouté avec succès !";
+        echo "<br><p style='color: green;'>Moniteur ajouté avec succès !</p>";
         header("Refresh:1");
     }
 ?>

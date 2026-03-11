@@ -135,14 +135,14 @@ class Modele {
                     from examen 
                     where id_candidat = :id_candidat 
                     and (type_examen = 'Conduite Permis B' or type_examen = 'Conduite Permis A')
-                    and resultat = 'Réussi'";
+                    and resultat = 'Reussi'";
         
         $exec = $this->unPdo->prepare($requete);
         $exec->execute(array(':id_candidat' => $id_candidat));
         $result = $exec->fetch();
         
         if ($result['nb'] > 0) {
-            $update = "update candidat set statut = 'Diplômé' where id_candidat = :id_candidat";
+            $update = "update candidat set statut = 'Diplôme' where id_candidat = :id_candidat";
         } else {
             $requeteAttente = "select count(*) as nb 
                               from examen 

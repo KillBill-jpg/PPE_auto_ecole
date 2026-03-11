@@ -132,7 +132,6 @@
     };
 </script>
 
-<!-- ========== PARTIE 4 : MESSAGE DE SUCCÈS (À LA FIN) ========== -->
 <?php if ($messageSucces): ?>
     <p id="message-succes" style="color: green;">Examen modifié avec succès !</p>
     <script>
