@@ -1,3 +1,26 @@
+<?php
+    $messageSucces = false;
+    
+    if (isset($_POST['ModifierExamen'])) {
+        $tab = array(
+            "id_examen" => $_GET['id'],
+            "id_candidat" => $_POST['id_candidat'],
+            "id_moniteur" => !empty($_POST['id_moniteur']) ? $_POST['id_moniteur'] : null,
+            "id_vehicule" => !empty($_POST['id_vehicule']) ? $_POST['id_vehicule'] : null,
+            "type_examen" => $_POST['type_examen'],
+            "lieu_examen" => $_POST['lieu_examen'],
+            "date_examen" => $_POST['date_examen'],
+            "resultat" => $_POST['resultat'],
+            "remarques" => $_POST['remarques']
+        );
+        $unControleur->update_examen($tab);
+        $unControleur->update_statut_candidat($_POST['id_candidat']);
+        
+        $messageSucces = true;
+        echo "<meta http-equiv='refresh' content='1;url=index.php?page=6'>";
+    }
+?>
+
 <h3>Modification d'un examen</h3>
 
 <form method="post">
@@ -61,20 +84,20 @@
             </td>
         </tr>
         <tr>
-            <td>Date et heure de l'examen :</td>
-            <td><input type="datetime-local" name="date_examen" value="<?php echo date('Y-m-d\TH:i', strtotime($unExamen['date_examen'])); ?>" required></td>
-        </tr>
-        <tr>
             <td>Lieu de l'examen :</td>
             <td><input type="text" name="lieu_examen" value="<?php echo $unExamen['lieu_examen']; ?>"></td>
+        </tr>
+        <tr>
+            <td>Date et heure de l'examen :</td>
+            <td><input type="datetime-local" name="date_examen" value="<?php echo date('Y-m-d\TH:i', strtotime($unExamen['date_examen'])); ?>" required></td>
         </tr>
         <tr>
             <td>Résultat :</td>
             <td>
                 <select name="resultat">
                     <option value="En attente" <?php if($unExamen['resultat']=='En attente') echo 'selected'; ?>>En attente</option>
-                    <option value="Réussi" <?php if($unExamen['resultat']=='Réussi') echo 'selected'; ?>>Réussi</option>
-                    <option value="Échoué" <?php if($unExamen['resultat']=='Échoué') echo 'selected'; ?>>Échoué</option>
+                    <option value="Reussi" <?php if($unExamen['resultat']=='Reussi') echo 'selected'; ?>>Réussi</option>
+                    <option value="Echoue" <?php if($unExamen['resultat']=='Echoue') echo 'selected'; ?>>Échoué</option>
                 </select>
             </td>
         </tr>
@@ -90,43 +113,31 @@
 </form>
 
 <script>
-function toggleVehiculeMoniteur() {
-    var typeExamen = document.getElementById('type_examen').value;
-    var rowMoniteur = document.getElementById('row_moniteur');
-    var rowVehicule = document.getElementById('row_vehicule');
-    
-    if (typeExamen === 'Code de la route') {
-        rowMoniteur.style.display = 'none';
-        rowVehicule.style.display = 'none';
-    } else {
-        rowMoniteur.style.display = 'table-row';
-        rowVehicule.style.display = 'table-row';
+    function toggleVehiculeMoniteur() {
+        var typeExamen = document.getElementById('type_examen').value;
+        var rowMoniteur = document.getElementById('row_moniteur');
+        var rowVehicule = document.getElementById('row_vehicule');
+        
+        if (typeExamen === 'Code de la route') {
+            rowMoniteur.style.display = 'none';
+            rowVehicule.style.display = 'none';
+        } else {
+            rowMoniteur.style.display = 'table-row';
+            rowVehicule.style.display = 'table-row';
+        }
     }
-}
 
-// Appeler au chargement de la page
-window.onload = function() {
-    toggleVehiculeMoniteur();
-};
+    window.onload = function() {
+        toggleVehiculeMoniteur();
+    };
 </script>
 
-<?php
-    if (isset($_POST['ModifierExamen'])) {
-        $tab = array(
-            "id_examen" => $_GET['id'],
-            "id_candidat" => $_POST['id_candidat'],
-            "id_moniteur" => !empty($_POST['id_moniteur']) ? $_POST['id_moniteur'] : null,
-            "id_vehicule" => !empty($_POST['id_vehicule']) ? $_POST['id_vehicule'] : null,
-            "type_examen" => $_POST['type_examen'],
-            "date_examen" => $_POST['date_examen'],
-            "lieu_examen" => $_POST['lieu_examen'],
-            "numero_convocation" => $_POST['numero_convocation'],
-            "resultat" => $_POST['resultat'],
-            "remarques" => $_POST['remarques'],
-            "date_creation" => $_POST['date_creation']
-        );
-        $unControleur->update_examen($tab);
-        echo "<p style='color: green;'>Examen modifié avec succès !</p>";
-        header("Refresh:1; url=index.php?page=6");
-    }
-?>
+<!-- ========== PARTIE 4 : MESSAGE DE SUCCÈS (À LA FIN) ========== -->
+<?php if ($messageSucces): ?>
+    <p id="message-succes" style="color: green;">Examen modifié avec succès !</p>
+    <script>
+        setTimeout(function() {
+            document.getElementById('message-succes').style.opacity = '0';
+        }, 800);
+    </script>
+<?php endif; ?>

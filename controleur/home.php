@@ -281,7 +281,6 @@
                 $evenementsParJour[$jour][] = $evt;
             }
             
-            // Informations sur le mois
             $nomsMois = array('', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
                             'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
             $premierJour = mktime(0, 0, 0, $mois, 1, $annee);
@@ -420,24 +419,24 @@
                     $icone = ($evt['type_evenement'] == 'examen') ? '📝' : '🚗';
                     
                     echo '<div class="' . $classe . '">';
-                    echo '<div class="upcoming-date">' . $icone . ' ' . date('H:i', strtotime($evt['date_evenement']));
-                    if ($evt['duree_lecon']) {
-                        echo ' (' . $evt['duree_lecon'] . ' min)';
-                    }
-                    echo '</div>';
-                    echo '<div class="upcoming-title">' . htmlspecialchars($evt['candidat_nom']) . '</div>';
-                    echo '<div class="upcoming-details">';
-                    echo $evt['libelle'];
-                    if ($evt['moniteur_nom']) {
-                        echo ' - Moniteur : ' . htmlspecialchars($evt['moniteur_nom']);
-                    }
-                    if ($evt['vehicule_info'] && $evt['type_evenement'] == 'lecon') {
-                        echo '<br>Véhicule : ' . htmlspecialchars($evt['vehicule_info']);
-                    }
-                    if ($evt['vehicule_info'] && $evt['type_evenement'] == 'examen') {
-                        echo '<br>Lieu : ' . htmlspecialchars($evt['vehicule_info']);
-                    }
-                    echo '</div>';
+                        echo '<div class="upcoming-date">' . $icone . ' ' . date('H:i', strtotime($evt['date_evenement']));
+                            if ($evt['duree_lecon']) {
+                                echo ' (' . $evt['duree_lecon'] . ' min)';
+                            }
+                            echo '</div>';
+                            echo '<div class="upcoming-title">' . htmlspecialchars($evt['candidat_nom']) . '</div>';
+                            echo '<div class="upcoming-details">';
+                            echo $evt['libelle'];
+                            if ($evt['moniteur_nom']) {
+                                echo ' - Moniteur : ' . htmlspecialchars($evt['moniteur_nom']);
+                            }
+                            if ($evt['vehicule_info'] && $evt['type_evenement'] == 'lecon') {
+                                echo '<br>Véhicule : ' . htmlspecialchars($evt['vehicule_info']);
+                            }
+                            if ($evt['vehicule_info'] && $evt['type_evenement'] == 'examen') {
+                                echo '<br>Lieu : ' . htmlspecialchars($evt['vehicule_info']);
+                            }
+                        echo '</div>';
                     echo '</div>';
                 }
             }

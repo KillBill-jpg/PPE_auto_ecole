@@ -1,6 +1,12 @@
 <h2>Gestion des examens</h2>
 
 <?php
+    // AFFICHER LE MESSAGE DE SUCCÈS
+    if (isset($_SESSION['message'])) {
+        echo "<p style='color: green;'>".$_SESSION['message']."</p>";
+        unset($_SESSION['message']);
+    }
+
     if (isset($_GET['action']) && $_GET['action'] == 'supprimer' && isset($_GET['id'])) {
         $unControleur->delete_examen($_GET['id']);
         echo "<p style='color: green;'>Examen supprimé avec succès !</p>";

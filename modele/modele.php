@@ -128,6 +128,42 @@ class Modele {
         return $result['nb'];
     }
 
+                        /* gestion automatique du statut candidat */
+    
+    public function update_statut_candidat($id_candidat) {
+        $requete = "select count(*) as nb 
+                    from examen 
+                    where id_candidat = :id_candidat 
+                    and (type_examen = 'Conduite Permis B' or type_examen = 'Conduite Permis A')
+                    and resultat = 'Réussi'";
+        
+        $exec = $this->unPdo->prepare($requete);
+        $exec->execute(array(':id_candidat' => $id_candidat));
+        $result = $exec->fetch();
+        
+        if ($result['nb'] > 0) {
+            $update = "update candidat set statut = 'Diplômé' where id_candidat = :id_candidat";
+        } else {
+            $requeteAttente = "select count(*) as nb 
+                              from examen 
+                              where id_candidat = :id_candidat 
+                              and resultat = 'En attente'";
+            
+            $execAttente = $this->unPdo->prepare($requeteAttente);
+            $execAttente->execute(array(':id_candidat' => $id_candidat));
+            $resultAttente = $execAttente->fetch();
+            
+            if ($resultAttente['nb'] > 0) {
+                $update = "update candidat set statut = 'Examen en cours' where id_candidat = :id_candidat";
+            } else {
+                $update = "update candidat set statut = 'En formation' where id_candidat = :id_candidat";
+            }
+        }
+        
+        $execUpdate = $this->unPdo->prepare($update);
+        $execUpdate->execute(array(':id_candidat' => $id_candidat));
+    }
+
                         /* gestion des moniteurs */
     
     public function insert_moniteur($tab) {
@@ -386,14 +422,14 @@ class Modele {
         $requete = "insert into examen values (null, :id_candidat, :id_moniteur, :id_vehicule, :type_examen, :lieu_examen, :date_examen, :resultat, :remarques);";
         $exec = $this->unPdo->prepare($requete);
         $donnees = array(
-            ":id_candidat"         => $tab["id_candidat"],
-            ":id_moniteur"         => $tab["id_moniteur"],
-            ":id_vehicule"         => $tab["id_vehicule"],
-            ":type_examen"         => $tab["type_examen"],
-            ":lieu_examen"         => $tab["lieu_examen"],
-            ":date_examen"         => $tab["date_examen"],
-            ":resultat"            => $tab["resultat"],
-            ":remarques"           => $tab["remarques"],
+            ":id_candidat"  => $tab["id_candidat"],
+            ":id_moniteur"  => $tab["id_moniteur"],
+            ":id_vehicule"  => $tab["id_vehicule"],
+            ":type_examen"  => $tab["type_examen"],
+            ":lieu_examen"  => $tab["lieu_examen"],
+            ":date_examen"  => $tab["date_examen"],
+            ":resultat"     => $tab["resultat"],
+            ":remarques"    => $tab["remarques"]
         );
         $exec->execute($donnees);
     }
@@ -405,7 +441,7 @@ class Modele {
                     left join moniteur m on e.id_moniteur = m.id_moniteur
                     left join vehicule v on e.id_vehicule = v.id_vehicule
                     order by e.date_examen desc;";
-        $exec = $this->unPdo->prepare($requete);
+        $exec = $this->unPdo->query($requete);
         $exec->execute();
         return $exec->fetchAll();
     }
@@ -443,7 +479,7 @@ class Modele {
                     lieu_examen = :lieu_examen, 
                     date_examen = :date_examen,
                     resultat = :resultat, 
-                    remarques = :remarques, date_creation = :date_creation 
+                    remarques = :remarques
                     where id_examen = :id_examen;";
         $exec = $this->unPdo->prepare($requete);
         $donnees = array(
@@ -452,6 +488,7 @@ class Modele {
             ":id_vehicule"         => $tab["id_vehicule"],
             ":type_examen"         => $tab["type_examen"],
             ":date_examen"         => $tab["date_examen"],
+            ":lieu_examen"         => $tab["lieu_examen"],
             ":resultat"            => $tab["resultat"],
             ":remarques"           => $tab["remarques"],
             ":id_examen"           => $tab["id_examen"]
@@ -498,9 +535,7 @@ class Modele {
 
                         /* gestion du calendrier */
     
-    // Récupérer tous les événements (leçons + examens) pour le calendrier
     public function selectAll_evenements(){
-        // Récupérer les leçons
         $requeteLecons = "select 
                             'lecon' as type_evenement,
                             l.id_lecon as id_evenement,

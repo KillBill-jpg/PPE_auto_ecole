@@ -63,7 +63,7 @@
             "type_vehicule" => $_POST['type_vehicule']
         );
         $unControleur->insert_vehicule($tab);
-        echo "<br>Véhicule ajouté avec succès !";
+        echo "<br><p style='color: green;'>Véhicule ajouté avec succès !</p>";
         header("Refresh:1");
     }
 ?>

@@ -55,6 +55,11 @@ class Controleur {
         return $this->unModele->count_lecons_candidat($id_candidat);
     }
 
+    // Màj statut du candidat
+    public function update_statut_candidat($id_candidat){
+        $this->unModele->update_statut_candidat($id_candidat);
+    }
+
 
     // ***************** gestion des moniteurs ***************** 
 

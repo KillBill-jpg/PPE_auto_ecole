@@ -20,8 +20,8 @@
                 echo "<td>".$unExamen['id_examen']."</td>";
                 echo "<td>".$unExamen['nomC']." ".$unExamen['prenomC']."</td>";
                 echo "<td>".$unExamen['type_examen']."</td>";
-                echo "<td>".date('d/m/Y H:i', strtotime($unExamen['date_examen']))."</td>";
                 echo "<td>".$unExamen['lieu_examen']."</td>";
+                echo "<td>".date('d/m/Y H:i', strtotime($unExamen['date_examen']))."</td>";
                 if (!empty($unExamen['nomM'])) {
                     echo "<td>".$unExamen['nomM']." ".$unExamen['prenomM']."</td>";
                 } else {
@@ -36,8 +36,8 @@
                 
                 $couleur = '';
                 switch($unExamen['resultat']) {
-                    case 'Réussi': $couleur = 'color: green; font-weight: bold;'; break;
-                    case 'Échoué': $couleur = 'color: red; font-weight: bold;'; break;
+                    case 'Reussi': $couleur = 'color: green; font-weight: bold;'; break;
+                    case 'Echoue': $couleur = 'color: red; font-weight: bold;'; break;
                     case 'En attente': $couleur = 'color: orange;'; break;
                 }
                 echo "<td style='$couleur'>".$unExamen['resultat']."</td>";

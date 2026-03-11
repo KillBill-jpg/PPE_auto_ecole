@@ -20,6 +20,7 @@ create table candidat (
     adresseC varchar(100),
     telephoneC varchar(15),
     date_inscription date not null,
+    statut enum('En formation', 'Examen en cours', 'Diplome', 'Abandonne') default 'En formation',
     constraint pk_candidat primary key (id_candidat)
 );
 
@@ -68,7 +69,7 @@ create table examen (
     type_examen varchar(50) not null,
     lieu_examen varchar(100),
     date_examen datetime not null,
-    resultat enum('En attente', 'Réussi', 'Échoué') default 'En attente',
+    resultat enum('En attente', 'Reussi', 'Echoue') default 'En attente',
     remarques text,
     constraint pk_examen primary key (id_examen),
     foreign key (id_candidat) references candidat(id_candidat),

@@ -1,3 +1,25 @@
+<?php
+    $messageSucces = false;
+    
+    if (isset($_POST['ValiderExamen'])) {
+        $tab = array(
+            "id_candidat" => $_POST['id_candidat'],
+            "id_moniteur" => !empty($_POST['id_moniteur']) ? $_POST['id_moniteur'] : null,
+            "id_vehicule" => !empty($_POST['id_vehicule']) ? $_POST['id_vehicule'] : null,
+            "type_examen" => $_POST['type_examen'],
+            "lieu_examen" => $_POST['lieu_examen'],
+            "date_examen" => $_POST['date_examen'],
+            "resultat" => $_POST['resultat'],
+            "remarques" => $_POST['remarques']
+        );
+        $unControleur->insert_examen($tab);
+        $unControleur->update_statut_candidat($_POST['id_candidat']);
+        
+        $messageSucces = true;
+        echo "<meta http-equiv='refresh' content='1'>";
+    }
+?>
+
 <h3>Inscription à un examen</h3>
 
 <form method="post">
@@ -72,8 +94,8 @@
             <td>
                 <select name="resultat">
                     <option value="En attente" selected>En attente</option>
-                    <option value="Réussi">Réussi</option>
-                    <option value="Échoué">Échoué</option>
+                    <option value="Reussi">Réussi</option>
+                    <option value="Echoue">Échoué</option>
                 </select>
             </td>
         </tr>
@@ -108,23 +130,14 @@ window.onload = function() {
 };
 </script>
 
-<?php
-    if (isset($_POST['ValiderExamen'])) {
-        $tab = array(
-            "id_candidat" => $_POST['id_candidat'],
-            "id_moniteur" => !empty($_POST['id_moniteur']) ? $_POST['id_moniteur'] : null,
-            "id_vehicule" => !empty($_POST['id_vehicule']) ? $_POST['id_vehicule'] : null,
-            "type_examen" => $_POST['type_examen'],
-            "lieu_examen" => $_POST['lieu_examen'],
-            "date_examen" => $_POST['date_examen'],
-            "resultat" => $_POST['resultat'],
-            "remarques" => $_POST['remarques']
-        );
-        $unControleur->insert_examen($tab);
-        echo "<br>Examen inscrit avec succès !";
-        header("Refresh:1");
-    }
-?>
+<?php if ($messageSucces): ?>
+<p id="message-succes" style="color: green;">Examen inscrit avec succès !</p>
+<script>
+    setTimeout(function() {
+        document.getElementById('message-succes').style.opacity = '0';
+    }, 800);
+</script>
+<?php endif; ?>
 
 <hr>
 <h3>Liste des examens</h3>
