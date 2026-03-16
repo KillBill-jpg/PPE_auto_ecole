@@ -17,8 +17,11 @@
         $erreurCandidat = true;
     } else {
         $id_candidat = $candidat['id_candidat'];
-        
-        $prochaines_lecons = $unControleur->selectProchaines_lecons_candidat($id_candidat, 30); // 30 prochains jours
+        // Récupérer les prochaines leçons
+        $prochaines_lecons = $unControleur->selectProchaines_lecons_candidat($id_candidat, 30);
+        if ($prochaines_lecons === null) {
+            $prochaines_lecons = array();
+        }
         
         $prochains_examens = $unControleur->selectProchains_examens_candidat($id_candidat);
         
@@ -257,43 +260,38 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <div class="header-content">
             <div class="logo">
-                <h1>🚗 CASTELLANE-AUTO</h1>
+                <h1>Castellane-auto</h1>
                 <p>Espace Client</p>
             </div>
             <div class="user-info">
                 <p>Bonjour <strong><?php echo $_SESSION['prenom'] . ' ' . $_SESSION['nom']; ?></strong></p>
-                <a href="logout.php" class="btn-logout">🚪 Déconnexion</a>
+                <a href="logout.php" class="btn-logout">Déconnexion</a>
             </div>
         </div>
     </div>
 
-    <!-- Container -->
     <div class="container">
         <?php if (isset($erreurCandidat) && $erreurCandidat): ?>
-            <!-- Message si pas de candidat lié -->
             <div class="error-box">
-                <h3>⚠️ Compte non lié à un candidat</h3>
+                <h3>Compte non lié à un candidat</h3>
                 <p>Votre compte n'est pas encore lié à un dossier candidat. Veuillez contacter l'auto-école pour finaliser votre inscription.</p>
-                <p><strong>📞 Téléphone :</strong> 04 XX XX XX XX</p>
-                <p><strong>✉️ Email :</strong> contact@castellane-auto.fr</p>
+                <p><strong>Téléphone :</strong> 04 XX XX XX XX</p>
+                <p><strong>Email :</strong> contact@castellane-auto.fr</p>
                 <a href="../index.html" class="btn-primary">Retour au site</a>
             </div>
         <?php else: ?>
-            <!-- Welcome -->
             <div class="welcome-section">
-                <h2>👋 Bienvenue dans votre espace personnel</h2>
+                <h2>Bienvenue dans votre espace personnel</h2>
                 <p>Retrouvez ici toutes vos leçons de conduite et examens à venir.</p>
                 <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
-                    <a href="reserver-lecon.php" class="btn-primary">📅 Réserver une leçon</a>
-                    <a href="reserver-examen.php" class="btn-primary">📝 S'inscrire à un examen</a>
+                    <a href="reserver-lecon.php" class="btn-primary">Réserver une leçon</a>
+                    <a href="reserver-examen.php" class="btn-primary">S'inscrire à un examen</a>
                 </div>
             </div>
 
-            <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-number"><?php echo $total_lecons; ?></div>
@@ -313,9 +311,8 @@
                 </div>
             </div>
 
-            <!-- Prochaines leçons -->
             <div class="section">
-                <h3>📅 Mes prochaines leçons (30 prochains jours)</h3>
+                <h3>Mes prochaines leçons <em>(30 prochains jours)</em></h3>
                 
                 <?php if (count($prochaines_lecons) > 0): ?>
                     <table>
@@ -344,7 +341,7 @@
                                         <?php if ($lecon['immat']): ?>
                                             <?php echo $lecon['marque'] . ' ' . $lecon['modele']; ?>
                                         <?php else: ?>
-                                            <em>Code / BSR</em>
+                                            <em>Aucun</em>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -353,16 +350,14 @@
                     </table>
                 <?php else: ?>
                     <div class="empty-state">
-                        <div class="empty-state-icon">📅</div>
                         <p>Aucune leçon prévue dans les 30 prochains jours</p>
                         <p><small>Contactez votre moniteur pour planifier vos prochaines sessions</small></p>
                     </div>
                 <?php endif; ?>
             </div>
 
-            <!-- Prochains examens -->
             <div class="section">
-                <h3>📝 Mes examens</h3>
+                <h3>Mes examens</h3>
                 
                 <?php if (count($prochains_examens) > 0): ?>
                     <table>
@@ -406,7 +401,7 @@
                                             <?php 
                                             if ($examen['resultat'] == 'Reussi') echo 'Réussi';
                                             elseif ($examen['resultat'] == 'Echoue') echo 'Échoué';
-                                            else echo '⏳ En attente';
+                                            else echo 'En attente';
                                             ?>
                                         </span>
                                     </td>
@@ -416,15 +411,13 @@
                     </table>
                 <?php else: ?>
                     <div class="empty-state">
-                        <div class="empty-state-icon">📝</div>
                         <p>Aucun examen prévu pour le moment</p>
                     </div>
                 <?php endif; ?>
             </div>
 
-            <!-- Historique -->
             <div class="section">
-                <h3>📚 Historique de mes leçons passées</h3>
+                <h3>Historique de mes leçons passées</h3>
                 
                 <?php if (count($historique_lecons) > 0): ?>
                     <table>
@@ -462,7 +455,6 @@
                     <?php endif; ?>
                 <?php else: ?>
                     <div class="empty-state">
-                        <div class="empty-state-icon">📚</div>
                         <p>Aucune leçon passée</p>
                     </div>
                 <?php endif; ?>

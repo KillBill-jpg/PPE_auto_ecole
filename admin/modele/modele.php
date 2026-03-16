@@ -807,8 +807,8 @@
     
 
         public function selectProchaines_lecons_candidat($id_candidat, $nbJours = 30){
-            $dateDebut = date('d-m-Y');
-            $dateFin = date('d-m-Y', strtotime("+$nbJours days"));
+            $dateDebut = date('Y-m-d 00:00:00');
+            $dateFin = date('Y-m-d 23:59:59', strtotime("+$nbJours days"));
             
             $requete = "select l.*, c.nomC, c.prenomC, m.nomM, m.prenomM, v.immat, v.marque, v.modele
                         from lecon l
@@ -816,7 +816,8 @@
                         left join moniteur m on l.id_moniteur = m.id_moniteur
                         left join vehicule v on l.id_vehicule = v.id_vehicule
                         where l.id_candidat = :id_candidat
-                        and date(l.date_lecon) between :dateDebut and :dateFin
+                        and l.date_lecon >= :dateDebut
+                        and l.date_lecon <= :dateFin
                         order by l.date_lecon asc;";
             
             $exec = $this->unPdo->prepare($requete);
