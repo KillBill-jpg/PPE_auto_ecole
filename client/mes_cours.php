@@ -1,1 +1,0 @@
-<h2>Mes Cours</h2>

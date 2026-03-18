@@ -230,8 +230,8 @@
                     <label for="libelle">Type de cours *</label>
                     <select name="libelle" id="libelle" required>
                         <option value="">-- Choisir --</option>
-                        <option value="Permis B">Permis B (Voiture)</option>
-                        <option value="Permis A">Permis A (Moto)</option>
+                        <option value="Permis B">Permis B <em>(Voiture)</em></option>
+                        <option value="Permis A">Permis A <em>(Moto)</em></option>
                         <option value="Conduite accompagnée">Conduite accompagnée</option>
                         <option value="Code de la route">Code de la route</option>
                         <option value="BSR">BSR</option>
@@ -243,7 +243,7 @@
                     <input type="datetime-local" id="date_lecon" name="date_lecon" 
                            min="<?php echo date('d-m-Y\TH:i', strtotime('+48 hours')); ?>" 
                            required>
-                    <small style="color: #666;">Minimum 48h à l'avance</small>
+                    <small style="color: #666;"><em>Minimum 48h à l'avance</em></small>
                 </div>
 
                 <div class="form-group">
@@ -251,7 +251,7 @@
                     <select name="duree_lecon" id="duree_lecon" required>
                         <option value="30">30 minutes</option>
                         <option value="45">45 minutes</option>
-                        <option value="60" selected>1 heure (55 min)</option>
+                        <option value="60" selected>1 heure <em>(55 min)</em></option>
                         <option value="90">1h30</option>
                         <option value="120">2 heures</option>
                     </select>

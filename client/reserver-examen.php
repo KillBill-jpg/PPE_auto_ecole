@@ -234,18 +234,18 @@
                     <select name="type_examen" id="type_examen" required>
                         <option value="">-- Choisir --</option>
                         <option value="Code de la route">Code de la route</option>
-                        <option value="Conduite Permis B">Conduite Permis B</option>
-                        <option value="Conduite Permis A">Conduite Permis A (Moto)</option>
+                        <option value="Conduite Permis B">Conduite Permis B <em>(Voiture)</em></option>
+                        <option value="Conduite Permis A">Conduite Permis A <em>(Moto)</em></option>
                         <option value="BSR">BSR</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="date_examen">Date souhaitée *</label>
-                    <input type="date" id="date_examen" name="date_examen" 
-                           min="<?php echo date('d-m-Y', strtotime('+15 days')); ?>" 
+                    <label for="date_lecon">Date et heure souhaitées *</label>
+                    <input type="datetime-local" id="date_lecon" name="date_lecon" 
+                           min="<?php echo date('d-m-Y\TH:i', strtotime('+15 days')); ?>" 
                            required>
-                    <small style="color: #666;">Minimum 15 jours à l'avance</small>
+                    <small style="color: #666;"><em>Minimum 15 jours à l'avance</em></small>
                 </div>
 
                 <div class="form-group">
@@ -255,7 +255,7 @@
                         <option value="Centre d'examen de Toulon">Centre d'examen de Toulon</option>
                         <option value="Centre d'examen de La Garde">Centre d'examen de La Garde</option>
                         <option value="Centre d'examen de Hyères">Centre d'examen de Hyères</option>
-                        <option value="Autre (préciser dans remarques)">Autre (à préciser)</option>
+                        <option value="Autre (préciser dans remarques)">Autre <em>(à préciser)</em></option>
                     </select>
                 </div>
 
@@ -269,7 +269,7 @@
                 <ul style="margin-left: 20px; color: #666;">
                     <li><strong>Code de la route :</strong> Révisions complètes</li>
                     <li><strong>Permis B :</strong> Minimum 20 heures de conduite</li>
-                    <li><strong>Permis A :</strong> Minimum 20 heures (plateau + circulation)</li>
+                    <li><strong>Permis A :</strong> Minimum 20 heures <em>(plateau + circulation)</em></li>
                     <li><strong>BSR :</strong> 7 heures de formation obligatoires</li>
                 </ul>
             </div>
