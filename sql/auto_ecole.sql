@@ -77,5 +77,11 @@ create table examen (
     foreign key (id_vehicule) references vehicule(id_vehicule)
 );
 
+insert into candidat values (null, 'Lopez', 'Santana', '1990-05-15', '123 Rue de la Paix, Paris', '0123456789', '2023-01-10', 'En formation');
+
 insert into user values (null, 'admin@admin.fr', 'adminpass', 'Admin', 'Système', 'admin');
 insert into user values (null, 'client@test.fr', 'client123', 'Lopez', 'Santana', 'client');
+insert into user values (null, 'jones@ca.com', 'Mercedes123', 'Jones', 'Mercedes', 'client');
+insert into user values (null, 'kurt@ca.com', 'Kurt123', 'Kurt', 'Hummel', 'client');
+
+
