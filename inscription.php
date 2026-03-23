@@ -220,7 +220,7 @@ if (isset($_POST['Inscription'])) {
 <body>
     <div class="container">
         <div class="logo">
-            <h1>🚗 CASTELLANE-AUTO</h1>
+            <h1>Castellane-auto</h1>
             <p>Inscription en ligne</p>
         </div>
 
@@ -245,7 +245,7 @@ if (isset($_POST['Inscription'])) {
                 <p class="subtitle">Remplissez le formulaire pour vous inscrire à l'auto-école</p>
 
                 <div class="info-box">
-                    <strong>ℹ️ Après inscription, vous pourrez :</strong><br>
+                    <strong>Après inscription, vous pourrez :</strong><br>
                     • Réserver vos leçons de conduite en ligne<br>
                     • Vous inscrire aux examens<br>
                     • Consulter votre planning et vos résultats
@@ -296,7 +296,7 @@ if (isset($_POST['Inscription'])) {
                     </div>
 
                     <button type="submit" name="Inscription" class="btn-submit">
-                        ✅ Créer mon compte
+                        Créer mon compte
                     </button>
                 </form>
 
